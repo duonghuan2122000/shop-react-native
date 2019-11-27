@@ -34,7 +34,7 @@ export default class Category extends Component {
 }
 
 const styles = StyleSheet.create({
-    containerCategory: { height: heightCategory, marginHorizontal: 10, shadowColor: '#000000', shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.2, elevation: 5, backgroundColor: '#fff', padding: 10 },
+    containerCategory: { height: heightCategory, margin: 10, shadowColor: '#000000', shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.2, elevation: 5, backgroundColor: '#fff', padding: 10 },
     txtCategory: { marginBottom: 10, color: '#919492' },
     imageCategory: {
         height: heightImage,
