@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 
-export default () => {
-  return (
-    <View>
-      <Text>ChangeInfo</Text>
-    </View>
-  );
+export default class ChangeInfo extends Component {
+  render() {
+    return (
+      <View>
+        <Text>ChangeInfo</Text>
+      </View>
+    );
+  }
 }

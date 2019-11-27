@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 
-export default () => {
-  return (
-    <View>
-      <Text>OrderHistory</Text>
-    </View>
-  );
+export default class OrderHistory extends Component {
+  render() {
+    return (
+      <View>
+        <Text>OrderHistory</Text>
+      </View>
+    );
+  }
 }
