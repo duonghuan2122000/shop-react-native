@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, Dimensions, StyleSheet } from 'react-native';
+import { SafeAreaView, Text, Image, Dimensions, StyleSheet } from 'react-native';
 import Swiper from 'react-native-swiper';
 
 import little from '../../../../assets/images/little.jpg';
@@ -15,20 +15,20 @@ export default class Category extends Component {
     render() {
         const { imageCategory, containerCategory, txtCategory } = styles;
         return (
-            <View style={containerCategory}>
+            <SafeAreaView style={containerCategory}>
                 <Text style={txtCategory}>Category</Text>
                 <Swiper autoplay loop>
-                    <View>
+                    <SafeAreaView>
                         <Image source={little} style={imageCategory} />
-                    </View>
-                    <View>
+                    </SafeAreaView>
+                    <SafeAreaView>
                         <Image source={maxi} style={imageCategory} />
-                    </View>
-                    <View>
+                    </SafeAreaView>
+                    <SafeAreaView>
                         <Image source={party} style={imageCategory} />
-                    </View>
+                    </SafeAreaView>
                 </Swiper>
-            </View>
+            </SafeAreaView>
         );
     }
 }

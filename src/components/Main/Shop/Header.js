@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
     StyleSheet, Dimensions,
-    TouchableOpacity, View, Text, Image, TextInput
+    TouchableOpacity, SafeAreaView, Text, Image, TextInput
 } from 'react-native';
 import icMenu from '../../../assets/icons/ic_menu.png';
 import icLogo from '../../../assets/icons/ic_logo.png';
@@ -26,19 +26,19 @@ export default class Header extends Component {
     render() {
         const { container, topHeader, imageHeader, txtInputHeader, txtHeader } = styles;
         return (
-            <View style={container}>
-                <View style={topHeader}>
+            <SafeAreaView style={container}>
+                <SafeAreaView style={topHeader}>
                     <TouchableOpacity onPress={this.openMenu}>
                         <Image source={icMenu} style={imageHeader} />
                     </TouchableOpacity>
                     <Text style={txtHeader}>Wearing A Dress</Text>
                     <Image source={icLogo} style={imageHeader} />
-                </View>
+                </SafeAreaView>
                 <TextInput
                     placeholder="What do you want to buy ?"
                     style={txtInputHeader}
                 />
-            </View>
+            </SafeAreaView>
         );
     }
 }

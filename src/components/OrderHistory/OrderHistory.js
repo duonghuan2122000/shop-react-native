@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { SafeAreaView, Text } from 'react-native';
 
 export default class OrderHistory extends Component {
   render() {
     return (
-      <View>
+      <SafeAreaView>
         <Text>OrderHistory</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 }

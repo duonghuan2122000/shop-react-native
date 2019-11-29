@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Text, View, FlatList, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { Text, SafeAreaView, FlatList, TouchableOpacity, Image, Dimensions, StyleSheet } from 'react-native';
 
 import sp1 from '../../../../assets/images/sp1.jpg';
 import Category from './Category';
@@ -11,19 +11,23 @@ const widthProduct = (width - 60) / 2,
 
 export default class TopProduct extends Component {
     render() {
+        const {
+            container, containerList, productStyle, 
+            imageProduct, txtProductName, txtProductPrice
+        } = styles;
         return (
-            <View style={{ backgroundColor: '#fff', marginHorizontal: 10 }}>
+            <SafeAreaView style={container}>
                 
                 <FlatList
-                    contentContainerStyle={{ justifyContent: 'space-around', alignItems: 'center' }}
+                    contentContainerStyle={containerList}
                     data={[1, 2, 3, 4, 5, 6]}
                     numColumns={2}
                     keyExtractor={item => item}
                     renderItem={({ item }) => (
-                        <TouchableOpacity style={{ width: widthProduct, backgroundColor: '#fff', margin: 5, shadowColor: '#000000', shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.2, elevation: 5 }}>
-                            <Image source={sp1} style={{ width: widthImageProduct, height: heightImageProduct }} />
-                            <Text style={{ marginLeft: 10 }}>Product Name</Text>
-                            <Text style={{ marginLeft: 10, color: 'red', marginVertical: 5 }}>Product Price</Text>
+                        <TouchableOpacity style={productStyle}>
+                            <Image source={sp1} style={imageProduct} />
+                            <Text style={txtProductName}>Product Name</Text>
+                            <Text style={txtProductPrice}>Product Price</Text>
                         </TouchableOpacity>
                     )}
                     ListHeaderComponent={() => (
@@ -34,7 +38,16 @@ export default class TopProduct extends Component {
                     )}
                     ListHeaderComponentStyle={{backgroundColor: '#C5C7C6'}}
                 />
-            </View>
+            </SafeAreaView>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: { backgroundColor: '#fff', marginHorizontal: 10 },
+    containerList: { justifyContent: 'space-around', alignItems: 'center' },
+    productStyle: { width: widthProduct, backgroundColor: '#fff', margin: 5, shadowColor: '#000000', shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.2, elevation: 5 },
+    imageProduct: { width: widthImageProduct, height: heightImageProduct },
+    txtProductName: { marginLeft: 10 },
+    txtProductPrice: { marginLeft: 10, color: 'red', marginVertical: 5 }
+});

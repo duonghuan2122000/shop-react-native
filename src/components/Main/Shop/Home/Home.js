@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import TopProduct from './TopProduct';
 
 export default class Shop extends Component {
@@ -12,13 +12,9 @@ export default class Shop extends Component {
     }
     render() {
         return (
-            <View style={{ flex: 1, backgroundColor: '#C5C7C6', paddingTop: 10 }}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#C5C7C6', paddingTop: 10 }}>
                 <TopProduct />
-            </View>
+            </SafeAreaView>
         );
     }
 }
-
-// const styles = StyleSheet.create({
-
-// });

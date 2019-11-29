@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View } from 'react-native';
+import { Image, SafeAreaView } from 'react-native';
 
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
@@ -51,12 +51,12 @@ export default class Shop extends Component {
     render() {
         const { navigation } = this.props;
         return (
-            <View style={{ flex: 1 }}>
+            <SafeAreaView style={{ flex: 1 }}>
                 <Header navigation={navigation} />
-                <View style={{ flex: 10 }}>
+                <SafeAreaView style={{ flex: 10 }}>
                     <ShopNavigator navigation={navigation} />
-                </View>
-            </View>
+                </SafeAreaView>
+            </SafeAreaView>
         );
     }
 }
