@@ -11,18 +11,24 @@ const { width, height } = Dimensions.get('window');
 export default class Header extends Component {
     constructor(props) {
         super(props);
-    
+
         this.state = {
-             
+
         }
+        this.openMenu = this.openMenu.bind(this);
     }
-    
+
+    openMenu() {
+        const { navigation } = this.props;
+        navigation.openDrawer();
+    }
+
     render() {
         const { container, topHeader, imageHeader, txtInputHeader, txtHeader } = styles;
         return (
             <View style={container}>
                 <View style={topHeader}>
-                    <TouchableOpacity onPress={this.props.openMenu}>
+                    <TouchableOpacity onPress={this.openMenu}>
                         <Image source={icMenu} style={imageHeader} />
                     </TouchableOpacity>
                     <Text style={txtHeader}>Wearing A Dress</Text>

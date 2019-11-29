@@ -1,73 +1,62 @@
 import React, { Component } from 'react';
-import { View, Text, Image, Dimensions, StyleSheet, ScrollView } from 'react-native';
+import { Image, View } from 'react-native';
 
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+
+import Home from './Home/Home';
+import Cart from './Cart/Cart';
+import Search from './Search/Search';
+import Contact from './Contact/Contact';
 import Header from './Header';
-import Category from './Category';
 
-import sp1 from '../../../assets/images/sp1.jpg';
+import icHome from '../../../assets/icons/ic_home.png';
+import icCart from '../../../assets/icons/ic_cart.png';
+import icSearch from '../../../assets/icons/ic_search.png';
+import icContact from '../../../assets/icons/ic_contact.png';
 
-const {width} = Dimensions.get('window');
-const widthProduct = (width - 60) / 2,
-      widthImageProduct = widthProduct,
-      heightImageProduct = widthImageProduct * 452 / 361;
+const ShopNavigator = createBottomTabNavigator({
+    Home: {
+        screen: Home,
+        navigationOptions: {
+            tabBarIcon: <Image source={icHome} style={{ height: 24, width: 24 }} />
+        }
+    },
+    Cart: {
+        screen: Cart,
+        navigationOptions: {
+            tabBarIcon: <Image source={icCart} style={{ height: 24, width: 24 }} />
+        }
+    },
+    Search: {
+        screen: Search,
+        navigationOptions: {
+            tabBarIcon: <Image source={icSearch} style={{ height: 24, width: 24 }} />
+        }
+    },
+    Contact: {
+        screen: Contact,
+        navigationOptions: {
+            tabBarIcon: <Image source={icContact} style={{ height: 24, width: 24 }} />
+        }
+    }
+}, {
+    defaultNavigationOptions: {
+        header: null
+    }
+});
 
 export default class Shop extends Component {
-    constructor(props) {
-        super(props);
+    static router = ShopNavigator.router;
 
-        this.state = {
-
-        }
-        this.openDrawer = this.openDrawer.bind(this);
-    }
-
-    openDrawer() {
-        const { navigation } = this.props;
-        navigation.openDrawer();
-    }
     render() {
+        const { navigation } = this.props;
         return (
-            <View style={{ flex: 1, backgroundColor: '#C5C7C6' }}>
-                <Header openMenu={this.openDrawer} />
-                <View style={{ flex: 10, marginTop: 10 }}>
-                    <ScrollView contentContainerStyle={{flex: 1, backgroundColor: '#fff', marginHorizontal: 10, flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}>
-                        <View style={{width: widthProduct, backgroundColor: '#fff', margin: 5, shadowColor: '#000000', shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.2, elevation: 5}}>
-                            <Image source={sp1} style={{width: widthImageProduct, height: heightImageProduct}} />
-                            <Text style={{marginLeft: 10}}>Product Name</Text>
-                            <Text style={{marginLeft: 10, color: 'red'}}>Product Price</Text>
-                        </View>
-
-                        <View style={{width: widthProduct, backgroundColor: '#fff', margin: 5, shadowColor: '#000000', shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.2, elevation: 5}}>
-                            <Image source={sp1} style={{width: widthImageProduct, height: heightImageProduct}} />
-                            <Text style={{marginLeft: 10}}>Product Name</Text>
-                            <Text style={{marginLeft: 10, color: 'red'}}>Product Price</Text>
-                        </View>
-
-                        <View style={{width: widthProduct, backgroundColor: '#fff', margin: 5, shadowColor: '#000000', shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.2, elevation: 5}}>
-                            <Image source={sp1} style={{width: widthImageProduct, height: heightImageProduct}} />
-                            <Text style={{marginLeft: 10}}>Product Name</Text>
-                            <Text style={{marginLeft: 10, color: 'red'}}>Product Price</Text>
-                        </View>
-
-                        <View style={{width: widthProduct, backgroundColor: '#fff', margin: 5, shadowColor: '#000000', shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.2, elevation: 5}}>
-                            <Image source={sp1} style={{width: widthImageProduct, height: heightImageProduct}} />
-                            <Text style={{marginLeft: 10}}>Product Name</Text>
-                            <Text style={{marginLeft: 10, color: 'red'}}>Product Price</Text>
-                        </View>
-
-                        <View style={{width: widthProduct, backgroundColor: '#fff', margin: 5, shadowColor: '#000000', shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.2, elevation: 5}}>
-                            <Image source={sp1} style={{width: widthImageProduct, height: heightImageProduct}} />
-                            <Text style={{marginLeft: 10}}>Product Name</Text>
-                            <Text style={{marginLeft: 10, color: 'red'}}>Product Price</Text>
-                        </View>
-                        
-                    </ScrollView>
+            <View style={{ flex: 1 }}>
+                <Header navigation={navigation} />
+                <View style={{ flex: 10 }}>
+                    <ShopNavigator navigation={navigation} />
                 </View>
             </View>
         );
     }
 }
-
-const styles = StyleSheet.create({
-
-});
