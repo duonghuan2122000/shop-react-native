@@ -9,6 +9,27 @@ export default class Menu extends Component {
         this.state = {
             isLoggedIn: true
         }
+        this.gotoOrderHistor = this.gotoOrderHistor.bind(this);
+        this.gotoChangeInfo = this.gotoChangeInfo.bind(this);
+        this.gotoAuthentication = this.gotoAuthentication.bind(this);
+    }
+
+    gotoOrderHistor(){
+        const {navigation} = this.props;
+        navigation.closeDrawer();
+        navigation.push('OrderHistory');
+    }
+
+    gotoChangeInfo(){
+        const {navigation} = this.props;
+        navigation.closeDrawer();
+        navigation.push('ChangeInfo');
+    }
+
+    gotoAuthentication(){
+        const {navigation} = this.props;
+        navigation.closeDrawer();
+        navigation.push('Authentication');
     }
     
     render() {
@@ -19,7 +40,7 @@ export default class Menu extends Component {
         const signInJSX = (
             <SafeAreaView style={{ alignItems: 'center' }}>
                 <Image source={profile} style={imageProfile} />
-                <TouchableOpacity style={btnSignIn}>
+                <TouchableOpacity style={btnSignIn} onPress={this.gotoAuthentication}>
                     <Text style={txtBtn}>Sign In</Text>
                 </TouchableOpacity>
             </SafeAreaView>
@@ -32,10 +53,10 @@ export default class Menu extends Component {
                     <Text style={{ marginTop: 10, color: '#fff' }}>Duong Huan</Text>
                 </SafeAreaView>
                 <SafeAreaView>
-                    <TouchableOpacity style={btnSignedIn}>
+                    <TouchableOpacity style={btnSignedIn} onPress={this.gotoOrderHistor}>
                         <Text style={txtBtn}>Order History</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={btnSignedIn}>
+                    <TouchableOpacity style={btnSignedIn} onPress={this.gotoChangeInfo}>
                         <Text style={txtBtn}>Change Info</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={btnSignedIn}>

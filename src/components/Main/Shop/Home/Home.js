@@ -1,20 +1,22 @@
-import React, { Component } from 'react';
-import { SafeAreaView } from 'react-native';
-import TopProduct from './TopProduct';
+import {createStackNavigator} from 'react-navigation-stack';
 
-export default class Shop extends Component {
-    constructor(props) {
-        super(props);
+import HomeView from './HomeView';
+import ListProduct from './ListProduct/ListProduct';
+import ProductDetail from './ProductDetail/ProductDetail';
 
-        this.state = {
-
-        }
+export default createStackNavigator({
+    HomeView: {
+        screen: HomeView
+    },
+    ListProduct: {
+        screen: ListProduct
+    },
+    ProductDetail: {
+        screen: ProductDetail
     }
-    render() {
-        return (
-            <SafeAreaView style={{ flex: 1, backgroundColor: '#C5C7C6', paddingTop: 10 }}>
-                <TopProduct />
-            </SafeAreaView>
-        );
-    }
-}
+}, {
+    defaultNavigationOptions: {
+        header: null
+    },
+    initialRouteName: 'ListProduct'
+});
