@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { SafeAreaView, Text, FlatList, TouchableOpacity, Image, Dimensions, StyleSheet } from 'react-native';
 
-import backIcon from '../../../../assets/icons/backList.png';
 import sp1 from '../../../../assets/images/sp1.jpg';
 
 const { height, width } = Dimensions.get('window');
