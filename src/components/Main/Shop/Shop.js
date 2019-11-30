@@ -42,7 +42,8 @@ const ShopNavigator = createBottomTabNavigator({
 }, {
     defaultNavigationOptions: {
         header: null
-    }
+    },
+    initialRouteName: 'Cart'
 });
 
 export default class Shop extends Component {
