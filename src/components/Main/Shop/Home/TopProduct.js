@@ -10,6 +10,26 @@ const widthProduct = (width - 60) / 2,
     heightImageProduct = widthImageProduct * 452 / 361;
 
 export default class TopProduct extends Component {
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+             
+        }
+        this.gotoListProduct = this.gotoListProduct.bind(this);
+        this.gotoProductDetail = this.gotoProductDetail.bind(this);
+    }
+
+    gotoListProduct(){
+        const {navigation} = this.props;
+        navigation.push('ListProduct');
+    }
+    
+    gotoProductDetail(){
+        const {navigation} = this.props;
+        navigation.push('ProductDetail');
+    }
+
     render() {
         const {
             container, containerList, productStyle, 
@@ -24,7 +44,7 @@ export default class TopProduct extends Component {
                     numColumns={2}
                     keyExtractor={item => item}
                     renderItem={({ item }) => (
-                        <TouchableOpacity style={productStyle}>
+                        <TouchableOpacity style={productStyle} onPress={this.gotoProductDetail}>
                             <Image source={sp1} style={imageProduct} />
                             <Text style={txtProductName}>Product Name</Text>
                             <Text style={txtProductPrice}>Product Price</Text>
@@ -32,7 +52,7 @@ export default class TopProduct extends Component {
                     )}
                     ListHeaderComponent={() => (
                         <Fragment>
-                            <Category />
+                            <Category gotoListProduct={this.gotoListProduct} />
                             <Text style={{ backgroundColor: '#fff', paddingLeft: 10, paddingTop: 10, color: '#919492', borderTopColor: '#C5C7C6', borderTopWidth: 5, }}>Top Product</Text>
                         </Fragment>
                     )}

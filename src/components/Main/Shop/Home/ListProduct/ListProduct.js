@@ -17,11 +17,17 @@ export default class ListProduct extends Component {
 
         }
         this.goBack = this.goBack.bind(this);
+        this.gotoProductDetail = this.gotoProductDetail.bind(this);
     }
 
     goBack() {
         const { navigation } = this.props;
         navigation.goBack();
+    }
+
+    gotoProductDetail(){
+        const {navigation} = this.props;
+        navigation.push('ProductDetail');
     }
 
     render() {
@@ -46,7 +52,7 @@ export default class ListProduct extends Component {
                         keyExtractor={item => item.toString()}
                         numColumns={1}
                         renderItem={({ item }) => (
-                            <TouchableOpacity style={containerProduct}>
+                            <TouchableOpacity style={containerProduct} onPress={this.gotoProductDetail}>
                                 <SafeAreaView>
                                     <Image source={sp1} style={imageProduct} />
                                 </SafeAreaView>

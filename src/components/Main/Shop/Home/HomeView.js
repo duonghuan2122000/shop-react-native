@@ -11,9 +11,10 @@ export default class Shop extends Component {
         }
     }
     render() {
+        const {navigation} = this.props;
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#C5C7C6', paddingTop: 10 }}>
-                <TopProduct />
+                <TopProduct navigation={navigation} />
             </SafeAreaView>
         );
     }

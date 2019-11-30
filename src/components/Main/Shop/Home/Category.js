@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, Text, Image, Dimensions, StyleSheet } from 'react-native';
+import { SafeAreaView, Text, Image, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
 
 import little from '../../../../assets/images/little.jpg';
@@ -14,19 +14,20 @@ const widthImage = width - 20,
 export default class Category extends Component {
     render() {
         const { imageCategory, containerCategory, txtCategory } = styles;
+        const { gotoListProduct } = this.props;
         return (
             <SafeAreaView style={containerCategory}>
                 <Text style={txtCategory}>Category</Text>
                 <Swiper autoplay loop>
-                    <SafeAreaView>
+                    <TouchableOpacity onPress={gotoListProduct}>
                         <Image source={little} style={imageCategory} />
-                    </SafeAreaView>
-                    <SafeAreaView>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={gotoListProduct}>
                         <Image source={maxi} style={imageCategory} />
-                    </SafeAreaView>
-                    <SafeAreaView>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={gotoListProduct}>
                         <Image source={party} style={imageCategory} />
-                    </SafeAreaView>
+                    </TouchableOpacity>
                 </Swiper>
             </SafeAreaView>
         );

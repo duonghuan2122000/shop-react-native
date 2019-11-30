@@ -18,5 +18,5 @@ export default createStackNavigator({
     defaultNavigationOptions: {
         header: null
     },
-    initialRouteName: 'ProductDetail'
+    initialRouteName: 'HomeView'
 });

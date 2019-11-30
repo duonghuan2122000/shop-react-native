@@ -11,6 +11,20 @@ const heightImageProduct = height / 2.8,
     widthImageProduct = heightImageProduct / 452 * 361;
 
 export default class ProductDetail extends Component {
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+             
+        }
+        this.goBack = this.goBack.bind(this);
+    }
+
+    goBack(){
+        const {navigation} = this.props;
+        navigation.goBack();
+    }
+    
     render() {
         const {
             iconHeader, container, wrapper, header,
@@ -22,7 +36,7 @@ export default class ProductDetail extends Component {
             <SafeAreaView style={container}>
                 <SafeAreaView style={wrapper}>
                     <SafeAreaView style={header}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={this.goBack}>
                             <Image source={icBack} style={iconHeader} />
                         </TouchableOpacity>
                         <TouchableOpacity>
