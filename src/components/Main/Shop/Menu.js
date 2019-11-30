@@ -7,7 +7,7 @@ export default class Menu extends Component {
         super(props)
     
         this.state = {
-            isLoggedIn: true
+            isLoggedIn: false
         }
         this.gotoOrderHistor = this.gotoOrderHistor.bind(this);
         this.gotoChangeInfo = this.gotoChangeInfo.bind(this);

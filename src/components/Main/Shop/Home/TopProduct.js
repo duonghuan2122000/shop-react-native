@@ -65,7 +65,7 @@ export default class TopProduct extends Component {
 
 const styles = StyleSheet.create({
     container: { backgroundColor: '#fff', marginHorizontal: 10 },
-    containerList: { justifyContent: 'space-around', alignItems: 'center' },
+    containerList: { justifyContent: 'space-around', alignItems: 'center', paddingBottom: 5 },
     productStyle: { width: widthProduct, backgroundColor: '#fff', margin: 5, shadowColor: '#000000', shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.2, elevation: 5 },
     imageProduct: { width: widthImageProduct, height: heightImageProduct },
     txtProductName: { marginLeft: 10 },

@@ -13,7 +13,7 @@ export default class Shop extends Component {
     render() {
         const {navigation} = this.props;
         return (
-            <SafeAreaView style={{ flex: 1, backgroundColor: '#C5C7C6', paddingTop: 10 }}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#C5C7C6', paddingVertical: 10 }}>
                 <TopProduct navigation={navigation} />
             </SafeAreaView>
         );
