@@ -1,12 +1,18 @@
-import React, { Component } from 'react';
-import { SafeAreaView, Text} from 'react-native';
+import {createStackNavigator} from 'react-navigation-stack';
 
-export default class Search extends Component {
-    render() {
-        return (
-            <SafeAreaView>
-                <Text>Search</Text>
-            </SafeAreaView>
-        )
+import SearchView from './SearchView';
+import ProductDetail from '../Home/ProductDetail/ProductDetail';
+
+export default createStackNavigator({
+    SearchView: {
+        screen: SearchView
+    },
+    ProductDetail: {
+        screen: ProductDetail
     }
-}
+}, {
+    defaultNavigationOptions: {
+        header: null
+    },
+    initialRouteName: 'SearchView'
+});
