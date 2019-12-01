@@ -5,6 +5,7 @@ import icBack from '../../../../../assets/icons/back.png';
 import icLogo from '../../../../../assets/icons/cartfull.png';
 
 import sp1 from '../../../../../assets/images/sp1.jpg';
+import global from '../../../../../api/global';
 
 const { height } = Dimensions.get('window');
 const heightImageProduct = height / 2.8,
@@ -32,6 +33,8 @@ export default class ProductDetail extends Component {
             txtProductName, txtProductPrice, txtProductDescription,
             wrapperInfo, txtInfo
         } = styles;
+        const {navigation} = this.props;
+        const product = navigation.getParam('product');
         return (
             <SafeAreaView style={container}>
                 <SafeAreaView style={wrapper}>
@@ -45,30 +48,22 @@ export default class ProductDetail extends Component {
                     </SafeAreaView>
                     <ScrollView>
                         <ScrollView contentContainerStyle={wrapperImage} horizontal>
-                            <Image source={sp1} style={imageProduct} />
-                            <Image source={sp1} style={imageProduct} />
+                            {product.images.map((e, k) => (
+                                <Image key={k} source={{uri: `${global.baseUrl}/images/product/${e}`}} style={imageProduct} />
+                            ))}
                         </ScrollView>
                         <SafeAreaView style={wrapperTitleProduct}>
-                            <Text style={txtProductName}>Product Name</Text>
-                            <Text style={txtProductPrice}> / Product Price</Text>
+                            <Text style={txtProductName}>{product.name}</Text>
+                            <Text style={txtProductPrice}> / {product.price}$</Text>
                         </SafeAreaView>
                         <SafeAreaView style={wrapperInfo}>
-                            <Text style={txtInfo}>Material Sink</Text>
+                            <Text style={txtInfo}>Material {product.material}</Text>
                             <SafeAreaView style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text style={txtInfo}>Color Khaki</Text>
-                                <SafeAreaView style={{backgroundColor: 'green', borderRadius: 5, height: 10, width: 10, marginLeft: 10}} />
+                                <Text style={txtInfo}>Color {product.color}</Text>
+                                <SafeAreaView style={{backgroundColor: product.color, borderRadius: 5, height: 10, width: 10, marginLeft: 10}} />
                             </SafeAreaView>
                         </SafeAreaView>
-                        <Text style={txtProductDescription}>Lorem Ipsum is simply dummy text of the printing and 
-                            tting industry. Lorem Ipsum has been the industry's standard 
-                            dummy text ever since the 1500s, when an unknown printer took 
-                            alley of type and scrambled it to make a type specimen book. It 
-                            has survived not only five centuries, but also the leap into 
-                            electronic typesetting, remaining essentially unchanged. It 
-                            was popularised in the 1960s with the release of Letraset sheets 
-                            aining Lorem Ipsum passages, and more recently with desktop 
-                            publishing software like Aldus PageMaker including versions 
-                            of Lorem Ipsum.</Text>
+                        <Text style={txtProductDescription}>{product.description}</Text>
                     </ScrollView>
                 </SafeAreaView>
             </SafeAreaView>

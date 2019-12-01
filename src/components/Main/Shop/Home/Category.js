@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { SafeAreaView, Text, Image, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
 
+import global from '../../../../api/global';
 import little from '../../../../assets/images/little.jpg';
-import maxi from '../../../../assets/images/maxi.jpg';
-import party from '../../../../assets/images/party.jpg';
+
+import { connect } from 'react-redux';
 
 const { width } = Dimensions.get('window');
 const widthImage = width - 20,
@@ -14,20 +15,16 @@ const widthImage = width - 20,
 export default class Category extends Component {
     render() {
         const { imageCategory, containerCategory, txtCategory } = styles;
-        const { gotoListProduct } = this.props;
+        const { gotoListProduct, types } = this.props;
         return (
             <SafeAreaView style={containerCategory}>
                 <Text style={txtCategory}>Category</Text>
                 <Swiper autoplay loop>
-                    <TouchableOpacity onPress={gotoListProduct}>
-                        <Image source={little} style={imageCategory} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={gotoListProduct}>
-                        <Image source={maxi} style={imageCategory} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={gotoListProduct}>
-                        <Image source={party} style={imageCategory} />
-                    </TouchableOpacity>
+                    {types.map(e => (
+                        <TouchableOpacity key={e.id} onPress={() => gotoListProduct(e)}>
+                            <Image source={{ uri: `${global.baseUrl}/images/type/${e.image}` }} style={imageCategory} />
+                        </TouchableOpacity>
+                    ))}
                 </Swiper>
             </SafeAreaView>
         );

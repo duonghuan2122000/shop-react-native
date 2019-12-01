@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { SafeAreaView, Text, FlatList, TouchableOpacity, Image, Dimensions, StyleSheet } from 'react-native';
+import { SafeAreaView, Text, FlatList, TouchableOpacity, Image, Dimensions, StyleSheet, ActivityIndicator } from 'react-native';
 
 import backIcon from '../../../../../assets/icons/backList.png';
-import sp1 from '../../../../../assets/images/sp1.jpg';
+import global from '../../../../../api/global';
+
+import fetchListProduct from '../../../../../api/fetchListProduct';
 
 const { height, width } = Dimensions.get('window');
 const imageProductHeight = (height / 11 * 10 - 100) / 3 - 40,
@@ -14,10 +16,26 @@ export default class ListProduct extends Component {
         super(props)
 
         this.state = {
-
+            page: 1,
+            products: [],
+            loading: false,
+            hasData: false
         }
         this.goBack = this.goBack.bind(this);
         this.gotoProductDetail = this.gotoProductDetail.bind(this);
+        this.loadMoreData = this.loadMoreData.bind(this);
+        this.renderFooterLoadMore = this.renderFooterLoadMore.bind(this);
+    }
+
+    UNSAFE_componentWillMount() {
+        const { page, products } = this.state;
+        this.setState({ hasData: true });
+        fetchListProduct(page)
+            .then(json => this.setState({
+                page: page + 1,
+                products: [...products, ...json]
+            }))
+            .catch(() => this.setState({ loading: false }));
     }
 
     goBack() {
@@ -25,9 +43,28 @@ export default class ListProduct extends Component {
         navigation.goBack();
     }
 
-    gotoProductDetail(){
-        const {navigation} = this.props;
-        navigation.push('ProductDetail');
+    gotoProductDetail(product) {
+        const { navigation } = this.props;
+        navigation.push('ProductDetail', { product });
+    }
+
+    loadMoreData() {
+        this.setState({ loading: true });
+        const { page, products, hasData } = this.state;
+        if (!hasData) return null;
+        fetchListProduct(page)
+            .then(json => this.setState({
+                page: page + 1,
+                products: [...products, ...json],
+                loading: false
+            }))
+            .catch(() => this.setState({ loading: false, hasData: false }));
+    }
+
+    renderFooterLoadMore() {
+        const { loading, hasData } = this.state;
+        if (!loading || !hasData) return null;
+        return <ActivityIndicator size="small" color="#00ff00" />
     }
 
     render() {
@@ -36,6 +73,9 @@ export default class ListProduct extends Component {
             containerProduct, imageProduct, infoProduct, txtProductPrice,
             viewColor
         } = styles;
+        const { navigation } = this.props;
+        const type = navigation.getParam('type');
+        const { products } = this.state;
         return (
             <SafeAreaView style={container}>
                 <SafeAreaView style={wrapper}>
@@ -43,32 +83,34 @@ export default class ListProduct extends Component {
                         <TouchableOpacity onPress={this.goBack}>
                             <Image source={backIcon} style={iconHeader} />
                         </TouchableOpacity>
-                        <Text style={titleHeader}>Party Dress</Text>
+                        <Text style={titleHeader}>{type.name}</Text>
                         <SafeAreaView style={{ width: 15 }} />
                     </SafeAreaView>
 
                     <FlatList
-                        data={[1, 2, 3, 4]}
-                        keyExtractor={item => item.toString()}
+                        data={products}
+                        keyExtractor={item => item.id}
                         numColumns={1}
                         renderItem={({ item }) => (
-                            <TouchableOpacity style={containerProduct} onPress={this.gotoProductDetail}>
+                            <TouchableOpacity style={containerProduct} onPress={() => this.gotoProductDetail(item)}>
                                 <SafeAreaView>
-                                    <Image source={sp1} style={imageProduct} />
+                                    <Image source={{ uri: `${global.baseUrl}/images/product/${item.images[0]}` }} style={imageProduct} />
                                 </SafeAreaView>
                                 <SafeAreaView style={infoProduct}>
-                                    <Text>Product Name</Text>
-                                    <Text style={txtProductPrice}>Product Price</Text>
-                                    <Text>Material Sink</Text>
+                                    <Text>{item.name}</Text>
+                                    <Text style={txtProductPrice}>{item.price}$</Text>
+                                    <Text>Material {item.material}</Text>
                                     <SafeAreaView style={viewColor}>
-                                        <Text>Color RoyalBlue</Text>
-                                        <SafeAreaView style={{ backgroundColor: 'blue', height: 10, width: 10, borderRadius: 5 }} />
+                                        <Text>Color {item.color}</Text>
+                                        <SafeAreaView style={{ backgroundColor: item.color, height: 10, width: 10, borderRadius: 5 }} />
                                         <SafeAreaView />
-
                                     </SafeAreaView>
                                 </SafeAreaView>
                             </TouchableOpacity>
                         )}
+                        onEndReachedThreshold={0.1}
+                        onEndReached={this.loadMoreData}
+                        ListFooterComponent={this.renderFooterLoadMore}
                     />
                 </SafeAreaView>
             </SafeAreaView>

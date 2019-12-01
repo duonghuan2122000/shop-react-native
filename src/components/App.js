@@ -27,42 +27,7 @@ const AppNavigator = createStackNavigator({
   defaultNavigationOptions: {
     header: null
   },
-  initialRouteName: 'OrderHistory'
+  initialRouteName: 'Main'
 });
 
-class App extends Component {
-  static router = AppNavigator.router;
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      isLoading: false
-    }
-  }
-
-  componentDidMount() {
-    setTimeout(() => this.setState({ isLoading: false }), 1000);
-  }
-
-  render() {
-    const { navigation } = this.props;
-    const loading = (
-      <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator
-          size="large"
-          color="#00ff00"
-        />
-        <Text style={{marginTop: 10}}>Sora</Text>
-      </SafeAreaView>
-    );
-    const loaded = <AppNavigator navigation={navigation} />;
-    const mainJSX = this.state.isLoading ? loading : loaded;
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        {mainJSX}
-      </SafeAreaView>
-    );
-  }
-}
-
-export default createAppContainer(App);
+export default createAppContainer(AppNavigator);
