@@ -1,29 +1,54 @@
 import React, { Component } from 'react';
-import { SafeAreaView, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
-
+import { SafeAreaView, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import TextInputValid from './TextInputValid';
 export default class SignIn extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            name: '',
+            email: '',
+            password: '',
+            rePassword: '',
+            err: false
+        }
+    }
+
     render() {
         const {
-            txtInput, btnAuthentication,
+            btnAuthentication,
             txtBtnAuthentication, body
         } = styles;
+        const { name, email, password, rePassword, err } = this.state;
         return (
             <SafeAreaView style={body}>
-                <TextInput
+                <TextInputValid
+                    name="name"
                     placeholder="Enter Name"
-                    style={txtInput}
+                    value={name}
+                    onChangeText={name => this.setState({ name })}
                 />
-                <TextInput
-                    placeholder="Enter Email"
-                    style={txtInput}
+                <TextInputValid
+                    name="email"
+                    placeholder="Enter E-Mail"
+                    value={email}
+                    onChangeText={email => this.setState({ email })}
                 />
-                <TextInput
+                <TextInputValid
+                    name="password"
+                    secureTextEntry
                     placeholder="Enter Password"
-                    style={txtInput}
+                    value={password}
+                    onChangeText={password => this.setState({ password })}
+                    otherValue={6}
                 />
-                <TextInput
-                    placeholder="Enter Re-Password"
-                    style={txtInput}
+                <TextInputValid
+                    name="rePassword"
+                    secureTextEntry
+                    placeholder="Confirm Pasword"
+                    value={rePassword}
+                    onChangeText={rePassword => this.setState({ rePassword })}
+                    otherValue={password}
                 />
                 <TouchableOpacity style={btnAuthentication}>
                     <Text style={txtBtnAuthentication}>Sign Up Now</Text>
@@ -34,18 +59,13 @@ export default class SignIn extends Component {
 }
 
 const styles = StyleSheet.create({
-    txtInput: {
-        backgroundColor: '#fff',
-        borderRadius: 10,
-        paddingLeft: 10,
-        marginBottom: 10
-    },
     btnAuthentication: {
         borderWidth: 1,
         borderColor: '#fff',
         padding: 10,
         alignItems: 'center',
-        borderRadius: 10
+        borderRadius: 10,
+        marginTop: 10
     },
     txtBtnAuthentication: {
         color: '#fff'

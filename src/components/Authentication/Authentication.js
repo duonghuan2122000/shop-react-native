@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, Text, Image, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
+import { SafeAreaView, Text, Image, TouchableOpacity, StyleSheet, KeyboardAvoidingView } from 'react-native';
 
 import icBack from '../../assets/icons/back_white.png';
 import icLogo from '../../assets/icons/ic_logo.png';
@@ -41,7 +41,7 @@ export default class Authentication extends Component {
     const {isSignIn} = this.state;
     const mainJSX = isSignIn ? <SignIn /> : <SignUp />;
     return (
-      <SafeAreaView style={container}>
+      <KeyboardAvoidingView style={container} enabled behavior="padding">
         <SafeAreaView style={header}>
           <TouchableOpacity onPress={this.goBack}>
             <Image source={icBack} style={iconHeader} />
@@ -57,7 +57,7 @@ export default class Authentication extends Component {
             <Text style={!isSignIn ? disabledBtn : txtBtn}>Sign Up</Text>
           </TouchableOpacity>
         </SafeAreaView>
-      </SafeAreaView>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -79,7 +79,8 @@ const styles = StyleSheet.create({
   },
   footer: {
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginBottom: 10
   },
   btnSignIn: {
     backgroundColor: '#fff',
