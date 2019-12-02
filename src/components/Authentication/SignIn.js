@@ -1,37 +1,71 @@
 import React, { Component } from 'react';
-import { SafeAreaView, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
-
+import { SafeAreaView, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import TextInputValid from './TextInputValid';
 export default class SignIn extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            email: '',
+            password: '',
+            err: {
+                email: true,
+                password: true
+            }
+        }
+        this.onValid = this.onValid.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    onValid(name, typeBool) {
+        const newErr = {
+            ...this.state.err
+        };
+        newErr[name] = typeBool;
+        this.setState({ err: newErr });
+    }
+
+    onSubmit() {
+
+    }
+
     render() {
         const {
-            txtInput, btnAuthentication,
+            btnAuthentication,
             txtBtnAuthentication, body
-          } = styles;
+        } = styles;
+        const { email, password, err } = this.state;
         return (
             <SafeAreaView style={body}>
-                <TextInput
-                    placeholder="Enter Email"
-                    style={txtInput}
+                <TextInputValid
+                    name="email"
+                    placeholder="Enter E-Mail"
+                    value={email}
+                    onChangeText={email => this.setState({ email })}
+                    onValidTextInput={this.onValid}
                 />
-                <TextInput
+                <TextInputValid
+                    name="password"
+                    secureTextEntry
                     placeholder="Enter Password"
-                    style={txtInput}
+                    value={password}
+                    onChangeText={password => this.setState({ password })}
+                    otherValue={6}
+                    onValidTextInput={this.onValid}
                 />
-                <TouchableOpacity style={btnAuthentication}>
-                    <Text style={txtBtnAuthentication}>Sign In Now</Text>
-                </TouchableOpacity>
+                {(!err.email && !err.name && !err.password && !err.rePassword) ? (
+                    <TouchableOpacity style={btnAuthentication} onPress={this.onSubmit}>
+                        <Text style={txtBtnAuthentication}>Sign In Now</Text>
+                    </TouchableOpacity>
+                ) : (
+                    <Text style={{ alignItems: 'center', color: '#fff' }}>Button Submit will show when no error.</Text>
+                )}
             </SafeAreaView>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    txtInput: {
-        backgroundColor: '#fff',
-        borderRadius: 10,
-        paddingLeft: 10,
-        marginBottom: 10
-    },
     btnAuthentication: {
         borderWidth: 1,
         borderColor: '#fff',

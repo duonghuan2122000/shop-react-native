@@ -13,10 +13,12 @@ export default class TextInputValid extends Component {
         this.onValid = this.onValid.bind(this);
     }
 
-    onValid() {
-        const { name, value, otherValue } = this.props;
-        const { err } = validationCheck(name, value, otherValue);
+    onValid(text) {
+        const { name, otherValue, onValidTextInput, onChangeText } = this.props;
+        const { err } = validationCheck(name, text, otherValue);
         this.setState({ err });
+        onChangeText(text);
+        onValidTextInput(name, required(err));
     }
 
     render() {
@@ -31,9 +33,8 @@ export default class TextInputValid extends Component {
                     secureTextEntry={secureTextEntry}
                     placeholder={placeholder}
                     style={txtInput}
-                    onChangeText={text => onChangeText(text)}
+                    onChangeText={text => this.onValid(text)}
                     value={value}
-                    onBlur={this.onValid}
                 />
                 {err && (
                     <Text style={invalidText}>{err}</Text>

@@ -1,5 +1,4 @@
 export const required = (string) => {
-    string = string.toString();
     return (string === undefined || string === null || string === '' || string.length === 0) ? false : true;
 }
 
@@ -12,11 +11,11 @@ export const maxLength = (string, num) => {
 }
 
 export const isPhoneNumber = (string) => {
-    return required(string) && string.test(/^0\d{9}/);
+    return required(string) && /^0\d{9}/.test(string);
 }
 
 export const isEmail = (string) => {
-    return required(string) && string.test(/^(.+)@(.+)/);
+    return required(string) && /^(.+)@(.+)/.test(string);
 }
 
 export const isEqual = (str1, str2) => {

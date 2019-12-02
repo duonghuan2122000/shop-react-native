@@ -9,5 +9,5 @@ export default (name, email, password) => (
         body: JSON.stringify({name, email, password})
     })
         .then(handleErrors)
-        .then(res => res.json())
+        .then(res => res.text())
 );

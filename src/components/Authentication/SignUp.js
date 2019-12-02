@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { SafeAreaView, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import TextInputValid from './TextInputValid';
+import fetchSignUp from '../../api/fetchSignUp';
 export default class SignIn extends Component {
     constructor(props) {
         super(props)
@@ -10,8 +11,55 @@ export default class SignIn extends Component {
             email: '',
             password: '',
             rePassword: '',
-            err: false
+            err: {
+                name: true,
+                email: true,
+                password: true,
+                rePassword: true
+            }
         }
+        this.onValid = this.onValid.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    onValid(name, typeBool) {
+        const newErr = {
+            ...this.state.err
+        };
+        newErr[name] = typeBool;
+        this.setState({ err: newErr });
+    }
+
+    onSuccess() {
+        const { navigation } = this.props;
+        Alert.alert(
+            'Notice',
+            'Register User successful',
+            [
+                { text: 'OK', onPress: () => navigation.push('Main') },
+            ],
+            { cancelable: false },
+        );
+    }
+
+    onFailure() {
+        Alert.alert(
+            'Notice',
+            'Register User failure',
+            [
+                { text: 'OK' },
+            ],
+            { cancelable: false },
+        );
+    }
+
+    onSubmit() {
+        const { name, email, password } = this.state;
+        fetchSignUp(name, email, password)
+            .then(text => {
+                if (text === 'THANH_CONG') return this.onSuccess();
+                return this.onFailure();
+            });
     }
 
     render() {
@@ -27,12 +75,14 @@ export default class SignIn extends Component {
                     placeholder="Enter Name"
                     value={name}
                     onChangeText={name => this.setState({ name })}
+                    onValidTextInput={this.onValid}
                 />
                 <TextInputValid
                     name="email"
                     placeholder="Enter E-Mail"
                     value={email}
                     onChangeText={email => this.setState({ email })}
+                    onValidTextInput={this.onValid}
                 />
                 <TextInputValid
                     name="password"
@@ -41,6 +91,7 @@ export default class SignIn extends Component {
                     value={password}
                     onChangeText={password => this.setState({ password })}
                     otherValue={6}
+                    onValidTextInput={this.onValid}
                 />
                 <TextInputValid
                     name="rePassword"
@@ -49,10 +100,15 @@ export default class SignIn extends Component {
                     value={rePassword}
                     onChangeText={rePassword => this.setState({ rePassword })}
                     otherValue={password}
+                    onValidTextInput={this.onValid}
                 />
-                <TouchableOpacity style={btnAuthentication}>
-                    <Text style={txtBtnAuthentication}>Sign Up Now</Text>
-                </TouchableOpacity>
+                {(!err.email && !err.name && !err.password && !err.rePassword) ? (
+                    <TouchableOpacity style={btnAuthentication} onPress={this.onSubmit}>
+                        <Text style={txtBtnAuthentication}>Sign Up Now</Text>
+                    </TouchableOpacity>
+                ) : (
+                        <Text style={{ alignItems: 'center', color: '#fff' }}>Button Submit will show when no error.</Text>
+                    )}
             </SafeAreaView>
         )
     }
@@ -72,5 +128,8 @@ const styles = StyleSheet.create({
     },
     body: {
         paddingHorizontal: 15
+    },
+    txtBtnAuthenticationDisable: {
+        color: '#5b5b5b'
     }
 });
