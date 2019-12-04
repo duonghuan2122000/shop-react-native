@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { SafeAreaView, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import TextInputValid from './TextInputValid';
-export default class SignIn extends Component {
+import fetchSignIn from '../../api/fetchSignIn';
+import { connect } from 'react-redux';
+class SignIn extends Component {
     constructor(props) {
         super(props)
 
@@ -25,8 +27,26 @@ export default class SignIn extends Component {
         this.setState({ err: newErr });
     }
 
-    onSubmit() {
+    onSuccess() {
+        this.props.gotoMain();
+    }
 
+    onFailure() {
+        Alert.alert(
+            'Notice',
+            'Authenticated Failure',
+            [
+                { text: 'OK' },
+            ],
+            { cancelable: false },
+        );
+    }
+
+    onSubmit() {
+        const { email, password } = this.state;
+        this.props.dispatch(fetchSignIn(email, password))
+            .then(() => this.onSuccess())
+            .catch(() => this.onFailure());
     }
 
     render() {
@@ -58,12 +78,14 @@ export default class SignIn extends Component {
                         <Text style={txtBtnAuthentication}>Sign In Now</Text>
                     </TouchableOpacity>
                 ) : (
-                    <Text style={{ alignItems: 'center', color: '#fff' }}>Button Submit will show when no error.</Text>
-                )}
+                        <Text style={{ alignItems: 'center', color: '#fff' }}>Button Submit will show when no error.</Text>
+                    )}
             </SafeAreaView>
         )
     }
 }
+
+export default connect()(SignIn);
 
 const styles = StyleSheet.create({
     btnAuthentication: {

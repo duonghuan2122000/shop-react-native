@@ -14,9 +14,6 @@ import icCart from '../../../assets/icons/ic_cart.png';
 import icSearch from '../../../assets/icons/ic_search.png';
 import icContact from '../../../assets/icons/ic_contact.png';
 
-import initData from '../../../api/initData';
-import { connect } from 'react-redux';
-
 const ShopNavigator = createBottomTabNavigator({
     Home: {
         screen: Home,
@@ -51,46 +48,9 @@ const ShopNavigator = createBottomTabNavigator({
 
 class Shop extends Component {
     static router = ShopNavigator.router;
-
-    constructor(props) {
-        super(props)
-
-        this.state = {
-        }
-        this.alertErr = this.alertErr.bind(this);
-    }
-
-    alertErr() {
-        Alert.alert(
-            'Notification',
-            'Maybe has issues when running.',
-            [
-                { text: 'OK', onPress: () => BackHandler.exitApp() },
-            ],
-            { cancelable: false },
-        );
-    }
-
-    componentDidMount() {
-        this.props.dispatch(initData());
-    }
-
-
     render() {
-        const { navigation, loading, errFetchData } = this.props;
-        if(errFetchData){
-            this.alertErr();
-        }
-        const loadingJSX = (
-            <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
-                <ActivityIndicator 
-                    size="large"
-                    color="#00ff00"
-                />
-            </SafeAreaView>
-        );
-
-        const loadedJSX = (
+        const { navigation } = this.props;
+        return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Header navigation={navigation} />
                 <SafeAreaView style={{ flex: 10 }}>
@@ -98,13 +58,7 @@ class Shop extends Component {
                 </SafeAreaView>
             </SafeAreaView>
         );
-
-        const mainJSX = loading ? loadingJSX : loadedJSX;
-        return mainJSX;
     }
 }
 
-export default connect(({initData}) => ({
-    loading: initData.loading,
-    errFetchData: initData.err
-}))(Shop);
+export default Shop;

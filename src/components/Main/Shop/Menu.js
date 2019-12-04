@@ -2,41 +2,43 @@ import React, { Component } from 'react';
 import { Image, Text, TouchableOpacity, SafeAreaView, StyleSheet } from 'react-native';
 
 import profile from '../../../assets/images/profile.png';
-export default class Menu extends Component {
+import { connect } from 'react-redux';
+class Menu extends Component {
     constructor(props) {
         super(props)
-    
+
         this.state = {
-            isLoggedIn: false
+
         }
         this.gotoOrderHistor = this.gotoOrderHistor.bind(this);
         this.gotoChangeInfo = this.gotoChangeInfo.bind(this);
         this.gotoAuthentication = this.gotoAuthentication.bind(this);
     }
 
-    gotoOrderHistor(){
-        const {navigation} = this.props;
+    gotoOrderHistor() {
+        const { navigation } = this.props;
         navigation.closeDrawer();
         navigation.push('OrderHistory');
     }
 
-    gotoChangeInfo(){
-        const {navigation} = this.props;
+    gotoChangeInfo() {
+        const { navigation } = this.props;
         navigation.closeDrawer();
         navigation.push('ChangeInfo');
     }
 
-    gotoAuthentication(){
-        const {navigation} = this.props;
+    gotoAuthentication() {
+        const { navigation } = this.props;
         navigation.closeDrawer();
         navigation.push('Authentication');
     }
-    
+
     render() {
         const {
             container, imageProfile, btnSignIn,
             txtBtn, btnSignedIn
         } = styles;
+        const { user } = this.props;
         const signInJSX = (
             <SafeAreaView style={{ alignItems: 'center' }}>
                 <Image source={profile} style={imageProfile} />
@@ -50,7 +52,7 @@ export default class Menu extends Component {
             <SafeAreaView style={{ justifyContent: 'space-around' }}>
                 <SafeAreaView style={{ alignItems: 'center' }}>
                     <Image source={profile} style={imageProfile} />
-                    <Text style={{ marginTop: 10, color: '#fff' }}>Duong Huan</Text>
+                    <Text style={{ marginTop: 10, color: '#fff' }}>{!user || !user.name ? '' : user.name}</Text>
                 </SafeAreaView>
                 <SafeAreaView>
                     <TouchableOpacity style={btnSignedIn} onPress={this.gotoOrderHistor}>
@@ -66,17 +68,23 @@ export default class Menu extends Component {
                 <SafeAreaView />
             </SafeAreaView>
         );
-        const mainJSX = this.state.isLoggedIn ? signedInJSX : signInJSX;
+        const mainJSX = user ? signedInJSX : signInJSX;
 
         return (
             <SafeAreaView
                 style={container}
                 forceInset={{ top: 'always', horizontal: 'never' }}>
-                    {mainJSX}
+                {mainJSX}
             </SafeAreaView>
         );
     }
 }
+
+export default connect(({ user }) => {
+    return {
+        user: user.user
+    }
+})(Menu);
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#50C797' },

@@ -12,11 +12,12 @@ export default class Authentication extends Component {
     super(props)
 
     this.state = {
-      isSignIn: false
+      isSignIn: true
     }
     this.gotoSignIn = this.gotoSignIn.bind(this);
     this.gotoSignUp = this.gotoSignUp.bind(this);
     this.goBack = this.goBack.bind(this);
+    this.gotoMain = this.gotoMain.bind(this);
   }
 
   gotoSignIn() {
@@ -27,9 +28,14 @@ export default class Authentication extends Component {
     this.setState({ isSignIn: false });
   }
 
-  goBack(){
-    const {navigation} = this.props;
+  goBack() {
+    const { navigation } = this.props;
     navigation.goBack();
+  }
+
+  gotoMain() {
+    const { navigation } = this.props;
+    navigation.push('Main');
   }
 
   render() {
@@ -38,8 +44,8 @@ export default class Authentication extends Component {
       footer, btnSignIn, btnSignUp, txtBtn,
       disabledBtn
     } = styles;
-    const {isSignIn} = this.state;
-    const mainJSX = isSignIn ? <SignIn /> : <SignUp gotoSignIn={this.gotoSignIn} />;
+    const { isSignIn } = this.state;
+    const mainJSX = isSignIn ? <SignIn gotoMain={this.gotoMain} /> : <SignUp gotoSignIn={this.gotoSignIn} />;
     return (
       <KeyboardAvoidingView style={container} enabled behavior="padding">
         <SafeAreaView style={header}>
