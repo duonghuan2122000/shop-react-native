@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
         borderColor: '#fff',
         padding: 10,
         alignItems: 'center',
-        borderRadius: 10
+        borderRadius: 10,
+        marginTop: 10
     },
     txtBtnAuthentication: {
         color: '#fff'

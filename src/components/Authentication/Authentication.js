@@ -39,7 +39,7 @@ export default class Authentication extends Component {
       disabledBtn
     } = styles;
     const {isSignIn} = this.state;
-    const mainJSX = isSignIn ? <SignIn /> : <SignUp />;
+    const mainJSX = isSignIn ? <SignIn /> : <SignUp gotoSignIn={this.gotoSignIn} />;
     return (
       <KeyboardAvoidingView style={container} enabled behavior="padding">
         <SafeAreaView style={header}>

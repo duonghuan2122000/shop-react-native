@@ -31,12 +31,12 @@ export default class SignIn extends Component {
     }
 
     onSuccess() {
-        const { navigation } = this.props;
+        const { gotoSignIn } = this.props;
         Alert.alert(
             'Notice',
             'Register User successful',
             [
-                { text: 'OK', onPress: () => navigation.push('Main') },
+                { text: 'OK', onPress: gotoSignIn() },
             ],
             { cancelable: false },
         );
