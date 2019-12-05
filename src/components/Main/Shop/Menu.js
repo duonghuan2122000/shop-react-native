@@ -3,6 +3,7 @@ import { Image, Text, TouchableOpacity, SafeAreaView, StyleSheet } from 'react-n
 
 import profile from '../../../assets/images/profile.png';
 import { connect } from 'react-redux';
+import signOut from '../../../api/signOut';
 class Menu extends Component {
     constructor(props) {
         super(props)
@@ -13,6 +14,7 @@ class Menu extends Component {
         this.gotoOrderHistor = this.gotoOrderHistor.bind(this);
         this.gotoChangeInfo = this.gotoChangeInfo.bind(this);
         this.gotoAuthentication = this.gotoAuthentication.bind(this);
+        this.signOut = this.signOut.bind(this);
     }
 
     gotoOrderHistor() {
@@ -31,6 +33,10 @@ class Menu extends Component {
         const { navigation } = this.props;
         navigation.closeDrawer();
         navigation.push('Authentication');
+    }
+
+    signOut() {
+        this.props.dispatch(signOut());
     }
 
     render() {
@@ -61,7 +67,7 @@ class Menu extends Component {
                     <TouchableOpacity style={btnSignedIn} onPress={this.gotoChangeInfo}>
                         <Text style={txtBtn}>Change Info</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={btnSignedIn}>
+                    <TouchableOpacity style={btnSignedIn} onPress={this.signOut}>
                         <Text style={txtBtn}>Sign Out</Text>
                     </TouchableOpacity>
                 </SafeAreaView>

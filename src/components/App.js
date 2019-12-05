@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StatusBar, ActivityIndicator, SafeAreaView, Text } from 'react-native';
+import { StatusBar, ActivityIndicator, SafeAreaView, Alert, BackHandler } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
@@ -8,7 +8,7 @@ import Authentication from './Authentication/Authentication';
 import ChangeInfo from './ChangeInfo/ChangeInfo';
 import OrderHistory from './OrderHistory/OrderHistory';
 
-import initData from '../api/initData';
+import { initData, initUser } from '../api/initData';
 import { connect } from 'react-redux';
 
 StatusBar.setHidden(true);
@@ -46,6 +46,7 @@ class App extends Component {
 
   componentDidMount() {
     this.props.dispatch(initData());
+    this.props.dispatch(initUser());
   }
   alertErr() {
     Alert.alert(
@@ -76,7 +77,7 @@ class App extends Component {
   }
 }
 
-export default createAppContainer(connect(({initData}) => {
+export default createAppContainer(connect(({ initData }) => {
   return {
     loading: initData.loading,
     errFetchData: initData.err
