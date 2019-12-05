@@ -13,6 +13,8 @@ import icHome from '../../../assets/icons/ic_home.png';
 import icCart from '../../../assets/icons/ic_cart.png';
 import icSearch from '../../../assets/icons/ic_search.png';
 import icContact from '../../../assets/icons/ic_contact.png';
+import IconWithBadge from './IconWithBadge';
+import { connect } from 'react-redux';
 
 const ShopNavigator = createBottomTabNavigator({
     Home: {
@@ -23,8 +25,10 @@ const ShopNavigator = createBottomTabNavigator({
     },
     Cart: {
         screen: Cart,
-        navigationOptions: {
-            tabBarIcon: <Image source={icCart} style={{ height: 24, width: 24 }} />
+        navigationOptions: ({navigation, screenProps}) => {
+            return {
+                tabBarIcon: <IconWithBadge badgeCount={screenProps.quantityCart} icon={icCart} />
+            }
         }
     },
     Search: {
@@ -49,16 +53,20 @@ const ShopNavigator = createBottomTabNavigator({
 class Shop extends Component {
     static router = ShopNavigator.router;
     render() {
-        const { navigation } = this.props;
+        const { navigation, quantityCart } = this.props;
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Header navigation={navigation} />
                 <SafeAreaView style={{ flex: 10 }}>
-                    <ShopNavigator navigation={navigation} />
+                    <ShopNavigator navigation={navigation} screenProps={{ quantityCart }} />
                 </SafeAreaView>
             </SafeAreaView>
         );
     }
 }
 
-export default Shop;
+export default connect(({ cart }) => {
+    return {
+        quantityCart: cart.length
+    }
+})(Shop);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StatusBar, ActivityIndicator, SafeAreaView, Alert, BackHandler } from 'react-native';
+import { StatusBar, ActivityIndicator, SafeAreaView, Alert, BackHandler, AppState } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
@@ -8,8 +8,10 @@ import Authentication from './Authentication/Authentication';
 import ChangeInfo from './ChangeInfo/ChangeInfo';
 import OrderHistory from './OrderHistory/OrderHistory';
 
-import { initData, initUser } from '../api/initData';
+import { initData, initUser, initCart } from '../api/initData';
 import { connect } from 'react-redux';
+import { setUserStorage } from '../api/userStorage';
+import { setCartStorage } from '../api/cartStorage';
 
 StatusBar.setHidden(true);
 
@@ -42,12 +44,28 @@ class App extends Component {
 
     }
     this.alertErr = this.alertErr.bind(this);
+    this._handleAppStateChange = this._handleAppStateChange.bind(this);
   }
 
   componentDidMount() {
+    AppState.addEventListener('change', this._handleAppStateChange);
     this.props.dispatch(initData());
     this.props.dispatch(initUser());
+    this.props.dispatch(initCart());
   }
+
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._handleAppStateChange);
+  }
+
+  _handleAppStateChange(currentAppState) {
+    if(currentAppState === 'background'){
+      const {cart, token} = this.props;
+      setCartStorage(cart);
+      setUserStorage(token);
+    }
+  }
+
   alertErr() {
     Alert.alert(
       'Notification',
@@ -77,9 +95,11 @@ class App extends Component {
   }
 }
 
-export default createAppContainer(connect(({ initData }) => {
+export default createAppContainer(connect(({ initData, user, cart }) => {
   return {
     loading: initData.loading,
-    errFetchData: initData.err
+    errFetchData: initData.err,
+    token: user.token,
+    cart
   }
 })(App));

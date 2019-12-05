@@ -5,8 +5,10 @@ import {
     fetchInitDataFailure
 } from '../store/actions/initData';
 import handleErrors from './handleErrors';
-import { getUserStorage } from './userStorage';
+import { getUserStorage, removeUserStorage } from './userStorage';
+import { getCartStorage, removeCartStorage } from './cartStorage';
 import { setUser } from '../store/actions/user';
+import { updateCart } from '../store/actions/cart';
 export const initData = () => dispatch => {
     dispatch(fetchInitDataBegin());
     return fetch(`${global.baseUrl}`, {
@@ -22,7 +24,7 @@ export const initData = () => dispatch => {
 }
 
 export const initUser = () => dispatch => {
-    getUserStorage()
+    return getUserStorage()
         .then(token => {
             fetch(`${global.baseUrl}/check_login.php`, {
                 method: 'post',
@@ -34,6 +36,13 @@ export const initUser = () => dispatch => {
             })
                 .then(handleErrors)
                 .then(res => res.json())
-                .then(json => dispatch(setUser(json.token, json.user)));
+                .then(json => dispatch(setUser(json.token, json.user)))
+                .catch(() => removeUserStorage());
         });
+}
+
+export const initCart = () => dispatch => {
+    return getCartStorage()
+        .then(cart => dispatch(updateCart(cart)))
+        .catch(() => dispatch(updateCart([])));
 }

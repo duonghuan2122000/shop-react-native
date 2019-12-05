@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { SafeAreaView, Text, Image, TouchableOpacity, StyleSheet, Dimensions, FlatList } from 'react-native';
 
-import sp1 from '../../../../assets/images/sp1.jpg';
+import global from '../../../../api/global';
+import { updateCart } from '../../../../store/actions/cart';
+
+import { connect } from 'react-redux';
 
 const { height } = Dimensions.get('window');
 const heightImageProduct = (height / 11 * 10 - 40) / 3 - 65,
     widthImageProduct = heightImageProduct / 452 * 361;
 
-export default class Cart extends Component {
+class Cart extends Component {
     constructor(props) {
         super(props)
 
@@ -15,50 +18,85 @@ export default class Cart extends Component {
 
         }
         this.gotoProductDetail = this.gotoProductDetail.bind(this);
+        this.increProduct = this.increProduct.bind(this);
+        this.decreProduct = this.decreProduct.bind(this);
+        this.removeProduct = this.removeProduct.bind(this);
     }
 
-    gotoProductDetail() {
+    gotoProductDetail(product) {
         const { navigation } = this.props;
-        navigation.push('ProductDetail');
+        navigation.push('ProductDetail', { product });
+    }
+
+    increProduct(idProduct) {
+        const { cart } = this.props;
+        const newCart = cart.map(e => {
+            if (e.product.id === idProduct) {
+                e.quantity++;
+            }
+            return e;
+        });
+
+        this.props.dispatch(updateCart(newCart));
+    }
+
+    decreProduct(idProduct) {
+        const { cart } = this.props;
+        const newCart = cart.map(e => {
+            if (e.product.id === idProduct) {
+                e.quantity--;
+            }
+            return e;
+        }).filter(e => e.quantity >= 1);
+
+        this.props.dispatch(updateCart(newCart));
+    }
+
+    removeProduct(idProduct) {
+        const { cart } = this.props;
+        const newCart = cart.filter(e => e.product.id != idProduct);
+        this.props.dispatch(updateCart(newCart));
     }
 
     render() {
         const {
             container, containerProduct, imageProduct,
             productInfo, txtProductName, txtProductPrice, control, changeQuantity,
-            wrapperContent, removeProduct, txtChangeQuantity, btnCheckOut,
+            wrapperContent, txtRemoveProduct, txtChangeQuantity, btnCheckOut,
             txtCheckOut
         } = styles;
+        const { cart } = this.props;
+        let totalPrice = cart.map(e => e.quantity * e.product.price).reduce((a, b) => a + b);
         return (
             <SafeAreaView style={container}>
 
                 <FlatList
-                    data={[1, 2, 3, 4, 5]}
-                    keyExtractor={item => item.toString()}
+                    data={cart}
+                    keyExtractor={item => item.product.id}
                     renderItem={({ item }) => (
                         <SafeAreaView style={containerProduct}>
-                            <Image source={sp1} style={imageProduct} />
+                            <Image source={{ uri: `${global.baseUrl}/images/product/${item.product.images[0]}` }} style={imageProduct} />
                             <SafeAreaView style={wrapperContent}>
                                 <SafeAreaView style={productInfo}>
-                                    <Text style={txtProductName}>Product Name</Text>
-                                    <Text style={txtProductPrice}>Product Price</Text>
+                                    <Text style={txtProductName}>{item.product.name}</Text>
+                                    <Text style={txtProductPrice}>{item.product.price}$</Text>
                                     <SafeAreaView style={control}>
                                         <SafeAreaView style={changeQuantity}>
-                                            <TouchableOpacity>
+                                            <TouchableOpacity onPress={() => this.decreProduct(item.product.id)}>
                                                 <Text style={txtChangeQuantity}>-</Text>
                                             </TouchableOpacity>
-                                            <Text>1</Text>
-                                            <TouchableOpacity>
+                                            <Text>{item.quantity}</Text>
+                                            <TouchableOpacity onPress={() => this.increProduct(item.product.id)}>
                                                 <Text style={txtChangeQuantity}>+</Text>
                                             </TouchableOpacity>
                                         </SafeAreaView>
-                                        <TouchableOpacity onPress={this.gotoProductDetail}>
+                                        <TouchableOpacity onPress={() => this.gotoProductDetail(item.product)}>
                                             <Text>Show Details</Text>
                                         </TouchableOpacity>
                                     </SafeAreaView>
                                 </SafeAreaView>
-                                <TouchableOpacity>
-                                    <Text style={removeProduct}>x</Text>
+                                <TouchableOpacity onPress={() => this.removeProduct(item.product.id)}>
+                                    <Text style={txtRemoveProduct}>x</Text>
                                 </TouchableOpacity>
                             </SafeAreaView>
                         </SafeAreaView>
@@ -66,13 +104,19 @@ export default class Cart extends Component {
                 />
 
                 <TouchableOpacity style={btnCheckOut}>
-                    <Text style={txtCheckOut}>TOTAL {1000}$ CHECKOUT NOW</Text>
+                    <Text style={txtCheckOut}>TOTAL {totalPrice}$ CHECKOUT NOW</Text>
                 </TouchableOpacity>
 
             </SafeAreaView>
         )
     }
 }
+
+export default connect(({ cart }) => {
+    return {
+        cart
+    }
+})(Cart);
 
 const styles = StyleSheet.create({
     container: {
@@ -121,7 +165,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         justifyContent: 'space-between'
     },
-    removeProduct: {
+    txtRemoveProduct: {
         color: '#a39a99',
         fontSize: 18
     },

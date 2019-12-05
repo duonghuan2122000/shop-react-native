@@ -2,30 +2,38 @@ import React, { Component } from 'react';
 import { SafeAreaView, Text, ScrollView, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 
 import icBack from '../../../../../assets/icons/back.png';
-import icLogo from '../../../../../assets/icons/cartfull.png';
-
-import sp1 from '../../../../../assets/images/sp1.jpg';
+import icCart from '../../../../../assets/icons/cartfull.png';
 import global from '../../../../../api/global';
+
+import { addCart } from '../../../../../store/actions/cart';
+
+import { connect } from 'react-redux';
+
 
 const { height } = Dimensions.get('window');
 const heightImageProduct = height / 2.8,
     widthImageProduct = heightImageProduct / 452 * 361;
 
-export default class ProductDetail extends Component {
+class ProductDetail extends Component {
     constructor(props) {
         super(props)
-    
+
         this.state = {
-             
+
         }
         this.goBack = this.goBack.bind(this);
+        this.addToCart = this.addToCart.bind(this);
     }
 
-    goBack(){
-        const {navigation} = this.props;
+    goBack() {
+        const { navigation } = this.props;
         navigation.goBack();
     }
-    
+
+    addToCart(product) {
+        this.props.dispatch(addCart(product));
+    }
+
     render() {
         const {
             iconHeader, container, wrapper, header,
@@ -33,7 +41,7 @@ export default class ProductDetail extends Component {
             txtProductName, txtProductPrice, txtProductDescription,
             wrapperInfo, txtInfo
         } = styles;
-        const {navigation} = this.props;
+        const { navigation } = this.props;
         const product = navigation.getParam('product');
         return (
             <SafeAreaView style={container}>
@@ -42,14 +50,14 @@ export default class ProductDetail extends Component {
                         <TouchableOpacity onPress={this.goBack}>
                             <Image source={icBack} style={iconHeader} />
                         </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Image source={icLogo} style={iconHeader} />
+                        <TouchableOpacity onPress={() => this.addToCart(product)}>
+                            <Image source={icCart} style={iconHeader} />
                         </TouchableOpacity>
                     </SafeAreaView>
                     <ScrollView>
                         <ScrollView contentContainerStyle={wrapperImage} horizontal>
                             {product.images.map((e, k) => (
-                                <Image key={k} source={{uri: `${global.baseUrl}/images/product/${e}`}} style={imageProduct} />
+                                <Image key={k} source={{ uri: `${global.baseUrl}/images/product/${e}` }} style={imageProduct} />
                             ))}
                         </ScrollView>
                         <SafeAreaView style={wrapperTitleProduct}>
@@ -58,9 +66,9 @@ export default class ProductDetail extends Component {
                         </SafeAreaView>
                         <SafeAreaView style={wrapperInfo}>
                             <Text style={txtInfo}>Material {product.material}</Text>
-                            <SafeAreaView style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <SafeAreaView style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={txtInfo}>Color {product.color}</Text>
-                                <SafeAreaView style={{backgroundColor: product.color, borderRadius: 5, height: 10, width: 10, marginLeft: 10}} />
+                                <SafeAreaView style={{ backgroundColor: product.color, borderRadius: 5, height: 10, width: 10, marginLeft: 10 }} />
                             </SafeAreaView>
                         </SafeAreaView>
                         <Text style={txtProductDescription}>{product.description}</Text>
@@ -70,6 +78,8 @@ export default class ProductDetail extends Component {
         )
     }
 }
+
+export default connect()(ProductDetail);
 
 const styles = StyleSheet.create({
     iconHeader: { height: 24, width: 24 },
