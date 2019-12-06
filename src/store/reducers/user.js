@@ -1,4 +1,4 @@
-import {SET_USER, SET_USER_FAILURE} from '../actions/user';
+import {SET_USER, REFRESH_TOKEN} from '../actions/user';
 
 const initialState = {
     user: null,
@@ -11,6 +11,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 user: action.payload.user,
+                token: action.payload.token
+            }
+        case REFRESH_TOKEN:
+            return {
+                ...state,
                 token: action.payload.token
             }
         default: 

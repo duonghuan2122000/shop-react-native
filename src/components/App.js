@@ -10,8 +10,8 @@ import OrderHistory from './OrderHistory/OrderHistory';
 
 import { initData, initUser, initCart } from '../api/initData';
 import { connect } from 'react-redux';
-import { setUserStorage } from '../api/userStorage';
 import { setCartStorage } from '../api/cartStorage';
+import refreshToken from '../api/refreshToken';
 
 StatusBar.setHidden(true);
 
@@ -59,10 +59,10 @@ class App extends Component {
   }
 
   _handleAppStateChange(currentAppState) {
-    if(currentAppState === 'background'){
-      const {cart, token} = this.props;
+    if (currentAppState === 'background') {
+      const { cart, token, dispatch } = this.props;
       setCartStorage(cart);
-      setUserStorage(token);
+      dispatch(refreshToken(token));
     }
   }
 
