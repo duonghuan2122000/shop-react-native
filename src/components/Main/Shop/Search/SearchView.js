@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { SafeAreaView, Text, FlatList, TouchableOpacity, Image, Dimensions, StyleSheet } from 'react-native';
 
-import sp1 from '../../../../assets/images/sp1.jpg';
+import fetchSearch from '../../../../api/fetchSearch';
+import global from '../../../../api/global';
 
 const { height, width } = Dimensions.get('window');
 const imageProductHeight = (height / 11 * 10 - 100) / 3 - 40,
@@ -13,14 +14,21 @@ export default class Search extends Component {
         super(props)
 
         this.state = {
-
+            listSearch: []
         }
         this.gotoProductDetail = this.gotoProductDetail.bind(this);
     }
 
-    gotoProductDetail(){
-        const {navigation} = this.props;
-        navigation.push('ProductDetail');
+    componentDidMount() {
+        const search = this.props.navigation.dangerouslyGetParent().getParam('search');
+        console.log(search);
+        fetchSearch(search)
+            .then(json => this.setState({ listSearch: json }))
+    }
+
+    gotoProductDetail(product) {
+        const { navigation } = this.props;
+        navigation.push('ProductDetail', { product });
     }
 
     render() {
@@ -29,31 +37,35 @@ export default class Search extends Component {
             containerProduct, imageProduct, infoProduct, txtProductPrice,
             viewColor
         } = styles;
+        const { listSearch } = this.state;
         return (
             <SafeAreaView style={container}>
                 <SafeAreaView style={wrapper}>
 
                     <FlatList
-                        data={[1, 2, 3, 4]}
-                        keyExtractor={item => item.toString()}
+                        data={listSearch}
+                        keyExtractor={item => item.id}
                         numColumns={1}
                         renderItem={({ item }) => (
-                            <TouchableOpacity style={containerProduct} onPress={this.gotoProductDetail}>
+                            <TouchableOpacity style={containerProduct} onPress={() => this.gotoProductDetail(item)}>
                                 <SafeAreaView>
-                                    <Image source={sp1} style={imageProduct} />
+                                    <Image source={{ uri: `${global.baseUrl}/images/product/${item.images[0]}` }} style={imageProduct} />
                                 </SafeAreaView>
                                 <SafeAreaView style={infoProduct}>
-                                    <Text>Product Name</Text>
-                                    <Text style={txtProductPrice}>Product Price</Text>
-                                    <Text>Material Sink</Text>
+                                    <Text>{item.name}</Text>
+                                    <Text style={txtProductPrice}>{item.price}$</Text>
+                                    <Text>Material {item.material}</Text>
                                     <SafeAreaView style={viewColor}>
-                                        <Text>Color RoyalBlue</Text>
-                                        <SafeAreaView style={{ backgroundColor: 'blue', height: 10, width: 10, borderRadius: 5 }} />
+                                        <Text>Color {item.color}</Text>
+                                        <SafeAreaView style={{ backgroundColor: item.color, height: 10, width: 10, borderRadius: 5 }} />
                                         <SafeAreaView />
 
                                     </SafeAreaView>
                                 </SafeAreaView>
                             </TouchableOpacity>
+                        )}
+                        ListEmptyComponent={(
+                            <Text>Enter keyword to search.</Text>
                         )}
                     />
                 </SafeAreaView>

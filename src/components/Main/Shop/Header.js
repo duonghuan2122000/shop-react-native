@@ -13,9 +13,10 @@ export default class Header extends Component {
         super(props);
 
         this.state = {
-
+            search: ''
         }
         this.openMenu = this.openMenu.bind(this);
+        this.onSubmitEditing = this.onSubmitEditing.bind(this);
     }
 
     openMenu() {
@@ -23,8 +24,15 @@ export default class Header extends Component {
         navigation.openDrawer();
     }
 
+    onSubmitEditing() {
+        const { search } = this.state;
+        console.log(search);
+        this.props.navigation.navigate('Search', { search: search });
+    }
+
     render() {
         const { container, topHeader, imageHeader, txtInputHeader, txtHeader } = styles;
+        const { search } = this.state;
         return (
             <SafeAreaView style={container}>
                 <SafeAreaView style={topHeader}>
@@ -37,6 +45,10 @@ export default class Header extends Component {
                 <TextInput
                     placeholder="What do you want to buy ?"
                     style={txtInputHeader}
+                    value={search}
+                    onChangeText={text => this.setState({ search: text })}
+                    returnKeyType={'search'}
+                    onSubmitEditing={this.onSubmitEditing}
                 />
             </SafeAreaView>
         );
